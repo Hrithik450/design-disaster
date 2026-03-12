@@ -13,31 +13,55 @@ export interface ProductCart {
   price_id: string;
 }
 
-export default function AddToBag({
-  currency,
-  description,
-  image,
-  name,
-  price,
-  price_id,
-}: ProductCart) {
+export default function AddToBag(props: any) {
   const { addItem, handleCartClick } = useShoppingCart();
 
   const product = {
-    name: name,
-    description: description,
-    price: price,
-    currency: currency,
-    image: urlFor(image).url(),
-    price_id: price_id,
+    name: props.name,
+    price: props.price,
+    currency: props.currency,
+    image: urlFor(props.image).url(),
+    price_id: props.price_id,
   };
+
   return (
     <Button
       onClick={() => {
-        addItem(product), handleCartClick();
+        addItem(product);
+        alert("Item added maybe?");
+        handleCartClick();
       }}
     >
-      Add To Cart
+      Add
     </Button>
   );
 }
+
+// export default function AddToBag({
+//   currency,
+//   description,
+//   image,
+//   name,
+//   price,
+//   price_id,
+// }: ProductCart) {
+//   const { addItem, handleCartClick } = useShoppingCart();
+
+//   const product = {
+//     name: name,
+//     description: description,
+//     price: price,
+//     currency: currency,
+//     image: urlFor(image).url(),
+//     price_id: price_id,
+//   };
+//   return (
+//     <Button
+//       onClick={() => {
+//         addItem(product), handleCartClick();
+//       }}
+//     >
+//       Add To Cart
+//     </Button>
+//   );
+// }

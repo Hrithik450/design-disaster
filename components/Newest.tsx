@@ -1,74 +1,81 @@
-import { client } from "@/app/lib/sanity";
-import { ProductTypes } from "@/lib/interface";
-import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export const getData = async () => {
-  const query = `*[_type=='product'][0...4] | order(_createdAt asc) {
-            _id,
-              name,
-              price,
-              "slug":slug.current,
-              "category":category->name,
-              "imageUrl":images[0].asset->url
-          }`;
-  const data = await client.fetch(query, { next: { fetch: 4 } });
-  return data;
-};
+const products = [
+  {
+    _id: "1",
+    name: "Running Shoes",
+    price: 120,
+    slug: "running-shoes",
+    imageUrl: "/images/shoe.jpg",
+  },
+  {
+    _id: "2",
+    name: "Smart Watch",
+    price: 220,
+    slug: "smart-watch",
+    imageUrl: "/images/watch.jpg",
+  },
+  {
+    _id: "3",
+    name: "Leather Bag",
+    price: 180,
+    slug: "leather-bag",
+    imageUrl: "/images/bag.jpg",
+  },
+  {
+    _id: "4",
+    name: "Headphones",
+    price: 90,
+    slug: "headphones",
+    imageUrl: "/images/headphone.jpg",
+  },
+];
 
-const Newest = async () => {
-  const products: ProductTypes[] = await getData();
-  //   console.log("products: ", products);
-
+const Newest = () => {
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-            Our Newest Products
-          </h2>
-          <Link
-            className="flex items-center gap-x-1 text-primary"
-            href="/products"
+    <div className="bg-gray-200 p-2 md:p-12">
+      <h2 className="mb-6 text-5xl font-bold md:text-3xl">
+        Random Stuff You Might Like Or Not
+      </h2>
+
+      <div className="flex gap-10 overflow-x-scroll md:grid md:grid-cols-4">
+        {products.map((product) => (
+          <div
+            key={product._id}
+            className="min-w-[280px] border bg-white p-2 shadow-md md:min-w-0 md:p-4"
           >
-            See All <ArrowRight size={20} />
-          </Link>
-        </div>
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
-            <div key={product._id} className="group relative">
-              <div className=" h-56  w-full rounded-md bg-gray-200 transition-all duration-100 group-hover:opacity-75 lg:h-72 xl:h-80">
-                <Image
-                  src={product.imageUrl}
-                  alt={"product.name"}
-                  className="h-full w-full object-cover  object-center"
-                  width={500}
-                  height={500}
-                />
-              </div>
-              <div className="mt-4 flex flex-wrap items-center justify-between px-1">
-                <h3 className=" text-sm text-gray-700">
-                  <Link href={`/products/${product.slug}`}>
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-0"
-                    ></span>
-                    {product.name}
-                  </Link>
-                </h3>
-                <p className="mt-1 text-sm font-bold text-gray-900">
-                  ${product.price}
-                </p>
-              </div>
-              <div className="flex justify-between">
-                <p className="mt-1 text-sm font-bold text-gray-900">
-                  {product.category}
-                </p>
-              </div>
+            <Image
+              src={product.imageUrl}
+              width={600}
+              height={300}
+              alt={product.name}
+              className="h-[250px] w-full object-cover"
+            />
+
+            <h3 className="mt-2 text-xs md:text-lg">
+              <Link href={`/products/${product.slug}`}>{product.name}</Link>
+            </h3>
+
+            <p className="text-[10px] text-gray-400 md:text-sm">
+              Price may change after payment or checkout confirmation
+            </p>
+
+            <div className="mt-2 flex flex-col gap-1">
+              <p className="text-lg font-bold text-red-500 md:text-base">
+                ${product.price}
+              </p>
+
+              <p className="text-[10px] text-gray-500">
+                Delivery between 1 day – 3 weeks
+              </p>
             </div>
-          ))}
-        </div>
+
+            <button className="mt-3 w-full bg-black py-1 text-xs text-white hover:bg-gray-800 md:text-sm">
+              Maybe Buy
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
