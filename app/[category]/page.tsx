@@ -50,7 +50,7 @@ const Category = ({ params }: { params: { category: string } }) => {
       <div className="mx-auto max-w-7xl">
         <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <h2 className="text-5xl font-bold text-gray-900 md:text-2xl">
-            Random Products for "{params.category}"
+            Random Products for &quot;{params.category}&quot;
           </h2>
 
           <p className="text-xs text-gray-500 md:text-sm">
